@@ -1,0 +1,46 @@
+# VikiTok Project Memory
+
+## Project State
+- Created a new Expo project with TypeScript
+- Set up the project structure with folders for components, services, stores, types, utils, hooks, i18n, and constants
+- Implemented core types for Article, UserPreference, and UserLike
+- Created constants for API endpoints, default topics, supported languages, and storage keys
+- Set up Supabase client (placeholder for URL and key)
+- Implemented services:
+  - ArticleService for fetching articles from Wikipedia API
+  - PreferenceService for managing user preferences
+  - LikeService for managing article likes
+- Implemented Zustand stores:
+  - articleStore for managing articles
+  - preferenceStore for managing preferences
+  - likeStore for managing likes
+- Set up internationalization with English and Turkish translations
+- Created utility for generating and retrieving user ID
+- Implemented Expo Router screens:
+  - Main feed screen
+  - Settings screen
+  - Topics selection screen
+- Created ArticleCard component for displaying articles
+- Fixed React hooks errors in Android app:
+  - Updated React version to 18.3.1 to match expo-router dependencies
+  - Updated react-native-screens to version 4.0.0
+  - Restructured App.tsx and _layout.tsx to avoid duplicate providers
+- Fixed additional errors:
+  - Added temporary Supabase URL and key for development
+  - Fixed missing default export issue in index.tsx
+  - Added SafeAreaProvider to handle insets properly
+  - Used LogBox to ignore the "topInsetsChange" warning
+  - Updated babel configuration with additional plugins for better compatibility
+- Fixed expo-doctor issues:
+  - Updated splash screen image path in app.json
+  - Updated dependencies to match Expo SDK requirements
+  - Added expo.doctor configuration to package.json to disable unnecessary warnings
+  - Ran prebuild to sync app config with native projects
+  - Installed expo-system-ui for userInterfaceStyle support
+
+## Next Steps
+- Set up Supabase project and create `likes` table
+- Implement testing for services
+- Improve UI/UX with better styling and animations
+- Implement more robust error handling
+- Optimize performance with caching and image optimization

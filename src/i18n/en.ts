@@ -1,0 +1,41 @@
+export default {
+  common: {
+    loading: 'Loading...',
+    error: 'An error occurred',
+    retry: 'Retry',
+    cancel: 'Cancel',
+    save: 'Save',
+    done: 'Done',
+  },
+  feed: {
+    title: 'VikiTok',
+    emptyState: 'No articles found. Try selecting different topics.',
+    loadMore: 'Loading more articles...',
+  },
+  article: {
+    like: 'Like',
+    unlike: 'Unlike',
+    share: 'Share',
+    readMore: 'Read more',
+    shareMessage: 'Check out this article on Wikipedia: ',
+  },
+  settings: {
+    title: 'Settings',
+    language: 'Language',
+    english: 'English',
+    turkish: 'Turkish',
+    darkMode: 'Dark Mode',
+    about: 'About',
+    version: 'Version',
+  },
+  topics: {
+    title: 'Topics',
+    selectTopics: 'Select topics you are interested in',
+    saveTopics: 'Save Topics',
+    history: 'History',
+    science: 'Science',
+    technology: 'Technology',
+    art: 'Art',
+    geography: 'Geography',
+  },
+}; 

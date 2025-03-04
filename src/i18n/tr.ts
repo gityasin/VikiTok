@@ -1,0 +1,41 @@
+export default {
+  common: {
+    loading: 'Yükleniyor...',
+    error: 'Bir hata oluştu',
+    retry: 'Tekrar Dene',
+    cancel: 'İptal',
+    save: 'Kaydet',
+    done: 'Tamam',
+  },
+  feed: {
+    title: 'VikiTok',
+    emptyState: 'Makale bulunamadı. Farklı konular seçmeyi deneyin.',
+    loadMore: 'Daha fazla makale yükleniyor...',
+  },
+  article: {
+    like: 'Beğen',
+    unlike: 'Beğenme',
+    share: 'Paylaş',
+    readMore: 'Devamını oku',
+    shareMessage: 'Wikipedia\'da bu makaleye göz atın: ',
+  },
+  settings: {
+    title: 'Ayarlar',
+    language: 'Dil',
+    english: 'İngilizce',
+    turkish: 'Türkçe',
+    darkMode: 'Karanlık Mod',
+    about: 'Hakkında',
+    version: 'Sürüm',
+  },
+  topics: {
+    title: 'Konular',
+    selectTopics: 'İlgilendiğiniz konuları seçin',
+    saveTopics: 'Konuları Kaydet',
+    history: 'Tarih',
+    science: 'Bilim',
+    technology: 'Teknoloji',
+    art: 'Sanat',
+    geography: 'Coğrafya',
+  },
+}; 
