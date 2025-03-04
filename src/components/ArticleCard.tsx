@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Linking } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Linking, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Sharing from 'expo-sharing';
 import { Article } from '../types';
@@ -8,11 +8,12 @@ import useLikeStore from '../stores/likeStore';
 
 interface ArticleCardProps {
   article: Article;
+  active?: boolean;
 }
 
-const { height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({ article, active = false }) => {
   const { likeArticle, unlikeArticle, isArticleLiked } = useLikeStore();
   const isLiked = isArticleLiked(article.id);
 
@@ -39,7 +40,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {article.imageUrl ? (
         <Image source={{ uri: article.imageUrl }} style={styles.image} />
       ) : (
@@ -48,16 +49,25 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
         </View>
       )}
       
-      <View style={styles.content}>
-        <Text style={styles.title}>{article.title}</Text>
-        <Text style={styles.snippet}>{article.snippet}</Text>
+      <View style={styles.overlay}>
+        <View style={styles.content}>
+          <Text style={styles.title}>{article.title}</Text>
+          <Text style={styles.snippet}>{article.snippet}</Text>
+          
+          <TouchableOpacity
+            style={styles.readMoreButton}
+            onPress={() => Linking.openURL(article.url)}
+          >
+            <Text style={styles.readMoreText}>{i18n.t('article.readMore')}</Text>
+          </TouchableOpacity>
+        </View>
         
-        <View style={styles.actions}>
+        <View style={styles.sideActions}>
           <TouchableOpacity onPress={handleLikeToggle} style={styles.actionButton}>
             <Ionicons
               name={isLiked ? 'heart' : 'heart-outline'}
-              size={24}
-              color={isLiked ? 'red' : 'black'}
+              size={32}
+              color={isLiked ? 'red' : 'white'}
             />
             <Text style={styles.actionText}>
               {isLiked ? i18n.t('article.unlike') : i18n.t('article.like')}
@@ -65,7 +75,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           </TouchableOpacity>
           
           <TouchableOpacity onPress={handleShare} style={styles.actionButton}>
-            <Ionicons name="share-outline" size={24} color="black" />
+            <Ionicons name="share-outline" size={32} color="white" />
             <Text style={styles.actionText}>{i18n.t('article.share')}</Text>
           </TouchableOpacity>
           
@@ -73,67 +83,96 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
             onPress={() => Linking.openURL(article.url)}
             style={styles.actionButton}
           >
-            <Ionicons name="open-outline" size={24} color="black" />
+            <Ionicons name="open-outline" size={32} color="white" />
             <Text style={styles.actionText}>{i18n.t('article.readMore')}</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: height - 100, // Adjust for header
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    width,
+    height,
+    backgroundColor: '#000',
   },
   image: {
     width: '100%',
-    height: '50%',
+    height: '100%',
     resizeMode: 'cover',
+    position: 'absolute',
   },
   placeholderImage: {
     width: '100%',
-    height: '50%',
-    backgroundColor: '#f0f0f0',
+    height: '100%',
+    backgroundColor: '#333',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
   },
   placeholderText: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#999',
   },
-  content: {
-    padding: 16,
+  overlay: {
     flex: 1,
-    justifyContent: 'space-between',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    flexDirection: 'row',
+  },
+  content: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'flex-end',
+    paddingBottom: 80,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
     marginBottom: 8,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
   },
   snippet: {
     fontSize: 16,
-    color: '#666',
-    flex: 1,
+    color: 'white',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
   },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#eee',
+  readMoreButton: {
+    marginTop: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    alignSelf: 'flex-start',
+  },
+  readMoreText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  sideActions: {
+    width: 80,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingBottom: 80,
   },
   actionButton: {
     alignItems: 'center',
+    marginBottom: 20,
   },
   actionText: {
     marginTop: 4,
     fontSize: 12,
+    color: 'white',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
   },
 });
 

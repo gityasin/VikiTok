@@ -56,6 +56,18 @@
   - Modified Feed component to clear articles when language changes
   - Updated Settings screen to immediately apply language changes
   - Added topic translations for Turkish language
+- Implemented TikTok-style scrolling:
+  - Replaced FlatList with PagerView for vertical snap-based pagination
+  - Redesigned ArticleCard component for full-screen display
+  - Added side action buttons similar to TikTok UI
+  - Implemented loading more articles when approaching the end of available content
+  - Increased article fetch limit from 10 to 20 for smoother experience
+  - Updated UI with dark theme and text shadows for better readability
+  - Created cross-platform TikTokPager component that uses PagerView on native platforms and ScrollView on web
+  - Fixed babel.config.js by removing deprecated 'expo-router/babel' plugin
+  - Improved cross-platform compatibility by using platform-specific files (.web.tsx and .native.tsx)
+  - Fixed ViewManagerResolver error by properly separating native and web implementations
+  - Ran prebuild to ensure native modules are properly linked
 
 ## Next Steps
 - Implement testing for services

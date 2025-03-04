@@ -14,6 +14,10 @@
 - [x] Fixed UUID error: "crypto.getRandomValues() not supported" by adding a crypto polyfill and improving error handling in userId.ts
 - [x] Fixed network request error: "TypeError: Network request failed" by implementing a local storage fallback for the LikeService
 - [x] Fixed language selection issue: Articles now load in Turkish when Turkish is selected as the language
+- [x] Fixed ViewManagerResolver error for react-native-pager-view by creating a cross-platform TikTokPager component
+- [x] Fixed babel.config.js warning by removing deprecated 'expo-router/babel' plugin
+- [x] Fixed "Importing native-only module" error on web by using platform-specific files (.web.tsx and .native.tsx)
+- [x] Fixed ViewManagerResolver error on Android by running prebuild and properly linking native modules
 
 ## Setup
 
@@ -29,6 +33,8 @@
 - [x] Implement `ArticleCard` component.
 - [x] Create `ArticleService` with `fetchArticles` and `getArticleContent` functions.
 - [x] Implement `Feed` component with vertical scrolling (using `react-native-gesture-handler` and `react-native-reanimated`).
+- [x] Implement TikTok-style vertical scrolling with snap pagination.
+- [x] Implement cross-platform TikTok-style scrolling that works on web and native platforms.
 - [x] Implement loading indicator.
 - [x] Implement basic error handling.
 - [x] Implement fetching of initial articles on app load.

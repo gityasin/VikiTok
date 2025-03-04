@@ -20,6 +20,14 @@ When the tests pass:
 * For web compatibility, ensure that browser APIs used by dependencies (like crypto) have appropriate polyfills.
 * When using third-party libraries, check if they support all target platforms.
 * Use platform-specific code sparingly and prefer cross-platform solutions when possible.
+* Create platform-specific components when necessary using Platform.OS checks.
+* For native modules that don't work on web, create wrapper components that provide alternative implementations.
+* Use ScrollView with pagingEnabled as a fallback for PagerView on web platforms.
+* Be cautious with libraries that use native modules as they may not work on all platforms without additional configuration.
+* Check for platform-specific warnings and errors in the console and address them promptly.
+* Use platform-specific file extensions (.web.tsx, .native.tsx, .ios.tsx, .android.tsx) for components that need different implementations per platform.
+* Run `npx expo prebuild --clean` after installing native modules to ensure they are properly linked.
+* For components that use native modules, create a common interface file (without platform extension) that exports the types and a placeholder component.
 
 ## Error Handling and Graceful Degradation
 
@@ -40,6 +48,26 @@ When the tests pass:
 * Clear and reload content when the language changes to ensure consistency.
 * Update the i18n locale immediately when the language changes to provide immediate feedback to the user.
 * Keep a consistent language experience throughout the app, including error messages and loading states.
+
+## TikTok-Style Scrolling Implementation
+
+* Use `react-native-pager-view` for implementing vertical snap-based pagination on native platforms.
+* Create a cross-platform component that uses different implementations for web and native:
+  * Use PagerView for native platforms (Android, iOS)
+  * Use ScrollView with pagingEnabled for web platforms
+* Use platform-specific file extensions (.web.tsx, .native.tsx) to provide different implementations for each platform.
+* Create a common interface file (without platform extension) that exports the types and a placeholder component.
+* Set the orientation to "vertical" for TikTok-style vertical swiping.
+* Design article cards to take up the full screen with a dark overlay for better text readability.
+* Position action buttons (like, share, etc.) on the side of the screen similar to TikTok.
+* Use a dark theme with text shadows to ensure text is readable over any background image.
+* Implement preloading by fetching more articles when the user approaches the end of available content.
+* Increase the article fetch limit to ensure a smooth scrolling experience without frequent loading states.
+* Use the `onPageSelected` event to track the current page and trigger loading more content when needed.
+* Consider the performance implications of loading full-screen images and implement appropriate optimizations.
+* Ensure the header is positioned absolutely to overlay the content without taking up space in the layout.
+* Handle platform-specific scrolling behaviors and events appropriately.
+* Run `npx expo prebuild --clean` after installing native modules to ensure they are properly linked.
 
 ## Retain Memory
 

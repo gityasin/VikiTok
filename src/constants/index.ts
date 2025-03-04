@@ -20,4 +20,4 @@ export const STORAGE_KEYS = {
 };
 
 // Article fetch limits
-export const ARTICLE_FETCH_LIMIT = 10; 
+export const ARTICLE_FETCH_LIMIT = 20; 
