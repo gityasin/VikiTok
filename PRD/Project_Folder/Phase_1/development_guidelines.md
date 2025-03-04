@@ -1,14 +1,13 @@
 # General Development Rules
 
-This is a cross-platform project. It should work on web, android and iOS
-
-Always use powershell commands and read maximum amount of files while using the read_file tool
-
-You should do task-based development. For every task, you should write the tests, implement the code, and run the tests to make sure everything works. Use `npx expo run android`, `npx expo run ios` or `npx expo start --web` command to run the app. Use Jest to write the test.
+* This is a cross-platform project. It should work on web, android and iOS
+* Always use powershell commands and read maximum amount of lines while using the read_file tool
+*You should do task-based development. For every task, you should write the tests, implement the code, and run the tests to make sure everything works. Use `npx expo run android`, `npx expo run ios` or `npx expo start --web` command to run the app. Use Jest to write the test.
 
 When the tests pass:
 * Update the todo list to reflect the task being completed
 * Update the memory file to reflect the current state of the project
+* Update the project_structure to reflect the changes to the project structure. make sure it's up to date with the current structure
 * Fix any warnings or errors in the code
 * Commit the changes to the repository with a descriptive commit message
 * Update the development guidelines to reflect anything that you've learned while working on the project

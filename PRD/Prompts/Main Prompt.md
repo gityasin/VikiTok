@@ -1,1 +1,1 @@
-Continue working on the project in @project_folder/phase_1. Follow the development guidelines in @development_guidelines, and remember everything in @memory.
+Continue working on the project in @project_folder/phase_1. Follow the development guidelines in @development_guidelines, and remember everything in @memory. Use powershell commands and read maximum amount of lines while using the read_file tool.
