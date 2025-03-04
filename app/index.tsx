@@ -3,17 +3,18 @@ import { View, Text, StyleSheet, ActivityIndicator, FlatList } from 'react-nativ
 import { StatusBar } from 'expo-status-bar';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { i18n } from '../src/i18n';
+import { i18n, setLocale } from '../src/i18n';
 import useArticleStore from '../src/stores/articleStore';
 import usePreferenceStore from '../src/stores/preferenceStore';
 import useLikeStore from '../src/stores/likeStore';
 import ArticleCard from '../src/components/ArticleCard';
 
 function Feed() {
-  const { articles, isLoading, error, fetchArticles } = useArticleStore();
+  const { articles, isLoading, error, fetchArticles, clearArticles } = useArticleStore();
   const { preferences, loadPreferences } = usePreferenceStore();
   const { loadLikes } = useLikeStore();
   const [refreshing, setRefreshing] = useState(false);
+  const [prevLanguage, setPrevLanguage] = useState<string | null>(null);
 
   // Load preferences and likes on mount
   useEffect(() => {
@@ -28,6 +29,18 @@ function Feed() {
   // Fetch articles when preferences change
   useEffect(() => {
     if (preferences.language && preferences.topics.length > 0) {
+      // Update i18n locale when language changes
+      setLocale(preferences.language);
+      
+      // If language has changed, clear articles first
+      if (prevLanguage !== null && prevLanguage !== preferences.language) {
+        clearArticles();
+      }
+      
+      // Update previous language
+      setPrevLanguage(preferences.language);
+      
+      // Fetch articles in the selected language
       fetchArticles(preferences.language, preferences.topics);
     }
   }, [preferences.language, preferences.topics]);

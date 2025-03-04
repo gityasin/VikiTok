@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { RadioButton } from 'react-native-paper';
-import { i18n } from '../src/i18n';
+import { i18n, setLocale } from '../src/i18n';
 import usePreferenceStore from '../src/stores/preferenceStore';
 import { Language } from '../src/types';
 
@@ -14,7 +14,11 @@ export default function Settings() {
 
   // Handle language change
   const handleLanguageChange = async (language: Language) => {
+    // Update the language in the store
     await setLanguage(language);
+    
+    // Update the i18n locale
+    setLocale(language);
   };
 
   return (

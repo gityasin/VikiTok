@@ -13,6 +13,7 @@
   - [x] Installed expo-system-ui for userInterfaceStyle support
 - [x] Fixed UUID error: "crypto.getRandomValues() not supported" by adding a crypto polyfill and improving error handling in userId.ts
 - [x] Fixed network request error: "TypeError: Network request failed" by implementing a local storage fallback for the LikeService
+- [x] Fixed language selection issue: Articles now load in Turkish when Turkish is selected as the language
 
 ## Setup
 

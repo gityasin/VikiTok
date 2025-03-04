@@ -12,7 +12,23 @@ class ArticleService {
   async fetchArticles(language: Language, topics: Topic[], offset: number = 0): Promise<Article[]> {
     try {
       // If no topics are selected, use a default search term
-      const searchTerm = topics.length > 0 ? topics[Math.floor(Math.random() * topics.length)] : 'featured';
+      let searchTerm = topics.length > 0 ? topics[Math.floor(Math.random() * topics.length)] : 'featured';
+      
+      // Translate search term for Turkish if needed
+      if (language === 'tr') {
+        // Map of common English topics to Turkish
+        const topicTranslations: Record<string, string> = {
+          'History': 'Tarih',
+          'Science': 'Bilim',
+          'Technology': 'Teknoloji',
+          'Art': 'Sanat',
+          'Geography': 'Coğrafya',
+          'featured': 'öne çıkan'
+        };
+        
+        // Use translation if available, otherwise keep original
+        searchTerm = topicTranslations[searchTerm] || searchTerm;
+      }
       
       // Construct the API URL for the opensearch endpoint
       const apiUrl = `${WIKIPEDIA_API_ENDPOINT[language]}?action=opensearch&search=${encodeURIComponent(searchTerm)}&limit=${ARTICLE_FETCH_LIMIT}&namespace=0&format=json&origin=*`;

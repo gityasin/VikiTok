@@ -51,6 +51,11 @@
   - Added local storage fallback for when Supabase is not available
   - Implemented graceful degradation for all Supabase operations
   - Added APP_PREFIX to STORAGE_KEYS for consistent key naming
+- Enhanced language support:
+  - Updated ArticleService to translate search terms for Turkish articles
+  - Modified Feed component to clear articles when language changes
+  - Updated Settings screen to immediately apply language changes
+  - Added topic translations for Turkish language
 
 ## Next Steps
 - Implement testing for services

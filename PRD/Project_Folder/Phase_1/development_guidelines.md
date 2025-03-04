@@ -32,6 +32,16 @@ When the tests pass:
 * Inform the user when operations fail, but try to maintain functionality when possible.
 * Design your application to work offline or with limited connectivity when possible.
 
+## Internationalization and Language Support
+
+* Use the i18n system for all user-facing text to support multiple languages.
+* When changing the language, update both the UI text and the content being fetched.
+* For content from external APIs (like Wikipedia), ensure the API requests use the correct language parameter.
+* Consider translating search terms and topics when fetching content in different languages.
+* Clear and reload content when the language changes to ensure consistency.
+* Update the i18n locale immediately when the language changes to provide immediate feedback to the user.
+* Keep a consistent language experience throughout the app, including error messages and loading states.
+
 ## Retain Memory
 
 There will be a memory file for every project.

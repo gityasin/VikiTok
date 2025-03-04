@@ -9,6 +9,22 @@ import usePreferenceStore from '../src/stores/preferenceStore';
 import { DEFAULT_TOPICS } from '../src/constants';
 import { Topic } from '../src/types';
 
+// Map of topic translations for display purposes only
+// The actual topic values stored in preferences remain in English
+const getTopicTranslation = (topic: string, language: string): string => {
+  if (language === 'tr') {
+    const translations: Record<string, string> = {
+      'History': 'Tarih',
+      'Science': 'Bilim',
+      'Technology': 'Teknoloji',
+      'Art': 'Sanat',
+      'Geography': 'Coğrafya'
+    };
+    return translations[topic] || topic;
+  }
+  return topic;
+};
+
 export default function Topics() {
   const router = useRouter();
   const { preferences, setTopics } = usePreferenceStore();
@@ -67,7 +83,9 @@ export default function Topics() {
                 status={selectedTopics.includes(topic) ? 'checked' : 'unchecked'}
                 onPress={() => handleTopicToggle(topic)}
               />
-              <Text style={styles.topicLabel}>{i18n.t(`topics.${topic.toLowerCase()}`)}</Text>
+              <Text style={styles.topicLabel}>
+                {i18n.t(`topics.${topic.toLowerCase()}`)}
+              </Text>
             </View>
           ))}
         </View>
