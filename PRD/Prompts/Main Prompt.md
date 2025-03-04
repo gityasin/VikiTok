@@ -1,0 +1,1 @@
+Continue working on the project in @project_folder/phase_1. Follow the development guidelines in @development_guidelines, and remember everything in @memory.
