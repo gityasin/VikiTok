@@ -14,6 +14,24 @@ When the tests pass:
 * Update the development guidelines to reflect anything that you've learned while working on the project
 * Stop and we will open a new chat for the next task
 
+## Cross-Platform Compatibility
+
+* Always test your code on multiple platforms (web, Android, iOS) to ensure compatibility.
+* Be aware of platform-specific APIs and provide polyfills or alternative implementations when necessary.
+* For web compatibility, ensure that browser APIs used by dependencies (like crypto) have appropriate polyfills.
+* When using third-party libraries, check if they support all target platforms.
+* Use platform-specific code sparingly and prefer cross-platform solutions when possible.
+
+## Error Handling and Graceful Degradation
+
+* Implement robust error handling for all operations, especially those involving external services.
+* Use try-catch blocks to catch and handle errors appropriately.
+* Provide fallback mechanisms for critical functionality when external services are unavailable.
+* Use local storage as a fallback for remote data storage when appropriate.
+* Log errors with meaningful messages to aid in debugging.
+* Inform the user when operations fail, but try to maintain functionality when possible.
+* Design your application to work offline or with limited connectivity when possible.
+
 ## Retain Memory
 
 There will be a memory file for every project.

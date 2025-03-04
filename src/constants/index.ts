@@ -14,6 +14,7 @@ export const SUPPORTED_LANGUAGES = ['en', 'tr'];
 
 // Storage keys
 export const STORAGE_KEYS = {
+  APP_PREFIX: 'vikitok',
   USER_PREFERENCES: 'user_preferences',
   USER_ID: 'user_id',
 };

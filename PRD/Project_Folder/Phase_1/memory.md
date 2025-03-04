@@ -5,7 +5,11 @@
 - Set up the project structure with folders for components, services, stores, types, utils, hooks, i18n, and constants
 - Implemented core types for Article, UserPreference, and UserLike
 - Created constants for API endpoints, default topics, supported languages, and storage keys
-- Set up Supabase client (placeholder for URL and key)
+- Set up Supabase project:
+  - Created a new Supabase project
+  - Created the `likes` table with appropriate columns and indexes
+  - Configured Row Level Security policies for the `likes` table
+  - Updated the Supabase client with real project URL and API key
 - Implemented services:
   - ArticleService for fetching articles from Wikipedia API
   - PreferenceService for managing user preferences
@@ -34,12 +38,21 @@
 - Fixed expo-doctor issues:
   - Updated splash screen image path in app.json
   - Updated dependencies to match Expo SDK requirements
-  - Added expo.doctor configuration to package.json to disable unnecessary warnings
+  - Added expo.doctor configuration to package.json to disable necessary warnings
   - Ran prebuild to sync app config with native projects
   - Installed expo-system-ui for userInterfaceStyle support
+- Fixed UUID error:
+  - Added a crypto polyfill to support crypto.getRandomValues() on platforms where it's not available
+  - Improved error handling in the getUserId function with fallback mechanisms
+  - Added a fallback ID generation function for cases where UUID generation fails
+- Added web support:
+  - Installed react-dom and react-native-web dependencies
+- Improved LikeService:
+  - Added local storage fallback for when Supabase is not available
+  - Implemented graceful degradation for all Supabase operations
+  - Added APP_PREFIX to STORAGE_KEYS for consistent key naming
 
 ## Next Steps
-- Set up Supabase project and create `likes` table
 - Implement testing for services
 - Improve UI/UX with better styling and animations
 - Implement more robust error handling

@@ -11,13 +11,15 @@
   - [x] Added expo.doctor configuration to package.json
   - [x] Ran prebuild to sync app config with native projects
   - [x] Installed expo-system-ui for userInterfaceStyle support
+- [x] Fixed UUID error: "crypto.getRandomValues() not supported" by adding a crypto polyfill and improving error handling in userId.ts
+- [x] Fixed network request error: "TypeError: Network request failed" by implementing a local storage fallback for the LikeService
 
 ## Setup
 
 - [x] Create Expo project with TypeScript.
 - [x] Install dependencies: `expo-router`, `zustand`, `i18n-js`, `expo-localization`, `expo-sharing`,`@react-native-async-storage/async-storage`, `react-native-gesture-handler`, `react-native-reanimated`, `react-native-paper`, `supabase-js`,`expo-secure-store`.
 - [x] Configure Expo Router.
-- [ ] Set up Supabase project and create `likes` table.
+- [x] Set up Supabase project and create `likes` table.
 - [x] Configure Supabase client in the Expo project.
 - [x] Create initial project structure (folders for components, services, stores, etc.).
 
