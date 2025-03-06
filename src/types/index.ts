@@ -11,11 +11,13 @@ export interface Article {
   language: Language;
   topics: Topic[];
   url: string;
+  hasOriginalImage?: boolean;
 }
 
 export interface UserPreference {
   language: Language;
   topics: Topic[];
+  zappingMode: boolean;
 }
 
 export interface UserLike {

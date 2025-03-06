@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Dimensions, StatusBar as RNStatusBar } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Dimensions, StatusBar as RNStatusBar, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,7 +14,7 @@ const { height } = Dimensions.get('window');
 
 function Feed() {
   const { articles, isLoading, error, fetchArticles, clearArticles } = useArticleStore();
-  const { preferences, loadPreferences } = usePreferenceStore();
+  const { preferences, loadPreferences, setZappingMode } = usePreferenceStore();
   const { loadLikes } = useLikeStore();
   const [currentPage, setCurrentPage] = useState(0);
   const [prevLanguage, setPrevLanguage] = useState<string | null>(null);
@@ -31,7 +31,7 @@ function Feed() {
 
   // Fetch articles when preferences change
   useEffect(() => {
-    if (preferences.language && preferences.topics.length > 0) {
+    if (preferences.language) {
       // Update i18n locale when language changes
       setLocale(preferences.language);
       
@@ -44,9 +44,9 @@ function Feed() {
       setPrevLanguage(preferences.language);
       
       // Fetch articles in the selected language
-      fetchArticles(preferences.language, preferences.topics);
+      fetchArticles(preferences.language, preferences.topics, 0, preferences.zappingMode);
     }
-  }, [preferences.language, preferences.topics]);
+  }, [preferences.language, preferences.topics, preferences.zappingMode]);
 
   // Handle page change
   const handlePageChange = (position: number) => {
@@ -54,8 +54,14 @@ function Feed() {
     
     // Load more articles when we're close to the end
     if (position >= articles.length - 2 && !isLoading && articles.length > 0) {
-      fetchArticles(preferences.language, preferences.topics, articles.length);
+      fetchArticles(preferences.language, preferences.topics, articles.length, preferences.zappingMode);
     }
+  };
+
+  // Toggle zapping mode
+  const toggleZappingMode = async () => {
+    await setZappingMode(!preferences.zappingMode);
+    clearArticles(); // Clear articles to get fresh random ones
   };
 
   // Prepare children for TikTokPager
@@ -91,6 +97,20 @@ function Feed() {
       <View style={styles.header}>
         <Text style={styles.title}>{i18n.t('feed.title')}</Text>
         <View style={styles.headerButtons}>
+          <TouchableOpacity 
+            onPress={toggleZappingMode} 
+            style={[styles.zappingButton, preferences.zappingMode && styles.zappingButtonActive]}
+          >
+            <Ionicons 
+              name="flash" 
+              size={24} 
+              color={preferences.zappingMode ? "#FFD700" : "white"} 
+              style={styles.headerButton} 
+            />
+          </TouchableOpacity>
+          <Link href="/likes" asChild>
+            <Ionicons name="heart" size={24} color="white" style={styles.headerButton} />
+          </Link>
           <Link href="/topics" asChild>
             <Ionicons name="list" size={24} color="white" style={styles.headerButton} />
           </Link>
@@ -103,7 +123,7 @@ function Feed() {
       {error ? (
         <View style={styles.centerContainer}>
           <Text style={styles.errorText}>{error}</Text>
-          <Text style={styles.retryText} onPress={() => fetchArticles(preferences.language, preferences.topics)}>
+          <Text style={styles.retryText} onPress={() => fetchArticles(preferences.language, preferences.topics, 0, preferences.zappingMode)}>
             {i18n.t('common.retry')}
           </Text>
         </View>
@@ -158,6 +178,13 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
   },
+  zappingButton: {
+    padding: 4,
+    borderRadius: 20,
+  },
+  zappingButtonActive: {
+    backgroundColor: 'rgba(255, 215, 0, 0.3)',
+  },
   centerContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -196,5 +223,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { Feed };
 export default Feed; 

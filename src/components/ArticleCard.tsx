@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Linking, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Sharing from 'expo-sharing';
 import { Article } from '../types';
 import { i18n } from '../i18n';
 import useLikeStore from '../stores/likeStore';
+import { useRouter } from 'expo-router';
+import { TapGestureHandler, State } from 'react-native-gesture-handler';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 interface ArticleCardProps {
   article: Article;
@@ -16,6 +19,12 @@ const { width, height } = Dimensions.get('window');
 const ArticleCard: React.FC<ArticleCardProps> = ({ article, active = false }) => {
   const { likeArticle, unlikeArticle, isArticleLiked } = useLikeStore();
   const isLiked = isArticleLiked(article.id);
+  const router = useRouter();
+  const doubleTapRef = useRef(null);
+  
+  // Animation values for heart icon
+  const heartScale = useSharedValue(0);
+  const heartOpacity = useSharedValue(0);
 
   // Handle like/unlike
   const handleLikeToggle = async () => {
@@ -25,6 +34,40 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, active = false }) =>
       await likeArticle(article.id);
     }
   };
+
+  // Handle double tap
+  const onSingleTap = (event: { nativeEvent: { state: number } }) => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      // Single tap does nothing
+    }
+  };
+
+  const onDoubleTap = async (event: { nativeEvent: { state: number } }) => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      // If not already liked, like the article
+      if (!isLiked) {
+        await likeArticle(article.id);
+        
+        // Animate heart icon
+        heartScale.value = 0;
+        heartOpacity.value = 1;
+        heartScale.value = withSpring(1, { damping: 10 });
+        
+        // Fade out after animation
+        setTimeout(() => {
+          heartOpacity.value = withTiming(0, { duration: 500 });
+        }, 1000);
+      }
+    }
+  };
+
+  // Animated style for heart icon
+  const heartStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: heartScale.value }],
+      opacity: heartOpacity.value,
+    };
+  });
 
   // Handle share
   const handleShare = async () => {
@@ -39,53 +82,79 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, active = false }) =>
     }
   };
 
+  // Handle read more - navigate to article screen
+  const handleReadMore = () => {
+    // For zap mode, we need to use the title instead of the ID
+    if (article.topics.includes('random')) {
+      router.push(`/article?id=${encodeURIComponent(article.title)}`);
+    } else {
+      router.push(`/article?id=${article.id}`);
+    }
+  };
+
+  // Handle open article - open in browser
+  const handleOpenArticle = () => {
+    Linking.openURL(article.url);
+  };
+
+  // Use a simpler approach for double tap detection on Android
+  const handleContentPress = () => {
+    // This is a fallback for platforms where gesture handler doesn't work well
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      {article.imageUrl ? (
-        <Image source={{ uri: article.imageUrl }} style={styles.image} />
-      ) : (
-        <View style={styles.placeholderImage}>
-          <Text style={styles.placeholderText}>VikiTok</Text>
-        </View>
-      )}
-      
-      <View style={styles.overlay}>
-        <View style={styles.content}>
-          <Text style={styles.title}>{article.title}</Text>
-          <Text style={styles.snippet}>{article.snippet}</Text>
-          
-          <TouchableOpacity
-            style={styles.readMoreButton}
-            onPress={() => Linking.openURL(article.url)}
-          >
-            <Text style={styles.readMoreText}>{i18n.t('article.readMore')}</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.gestureContainer}>
+        {article.imageUrl ? (
+          <Image source={{ uri: article.imageUrl }} style={styles.image} />
+        ) : (
+          <View style={styles.placeholderImage}>
+            <Text style={styles.placeholderText}>VikiTok</Text>
+          </View>
+        )}
         
-        <View style={styles.sideActions}>
-          <TouchableOpacity onPress={handleLikeToggle} style={styles.actionButton}>
-            <Ionicons
-              name={isLiked ? 'heart' : 'heart-outline'}
-              size={32}
-              color={isLiked ? 'red' : 'white'}
-            />
-            <Text style={styles.actionText}>
-              {isLiked ? i18n.t('article.unlike') : i18n.t('article.like')}
-            </Text>
-          </TouchableOpacity>
+        <Animated.View style={[styles.heartContainer, heartStyle]}>
+          <Ionicons name="heart" size={100} color="red" />
+        </Animated.View>
+        
+        <View style={styles.overlay}>
+          <View style={styles.content}>
+            <Text style={styles.title}>{article.title}</Text>
+            <Text style={styles.snippet}>{article.snippet}</Text>
+            
+            <TouchableOpacity
+              style={styles.readMoreButton}
+              onPress={handleReadMore}
+            >
+              <Text style={styles.readMoreText}>{i18n.t('article.readMore')}</Text>
+            </TouchableOpacity>
+          </View>
           
-          <TouchableOpacity onPress={handleShare} style={styles.actionButton}>
-            <Ionicons name="share-outline" size={32} color="white" />
-            <Text style={styles.actionText}>{i18n.t('article.share')}</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            onPress={() => Linking.openURL(article.url)}
-            style={styles.actionButton}
-          >
-            <Ionicons name="open-outline" size={32} color="white" />
-            <Text style={styles.actionText}>{i18n.t('article.readMore')}</Text>
-          </TouchableOpacity>
+          <View style={styles.sideActions}>
+            <TouchableOpacity onPress={handleLikeToggle} style={styles.actionButton}>
+              <Ionicons
+                name={isLiked ? 'heart' : 'heart-outline'}
+                size={32}
+                color={isLiked ? 'red' : 'white'}
+              />
+              <Text style={styles.actionText}>
+                {isLiked ? i18n.t('article.unlike') : i18n.t('article.like')}
+              </Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={handleShare} style={styles.actionButton}>
+              <Ionicons name="share-outline" size={32} color="white" />
+              <Text style={styles.actionText}>{i18n.t('article.share')}</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              onPress={handleOpenArticle}
+              style={styles.actionButton}
+            >
+              <Ionicons name="open-outline" size={32} color="white" />
+              <Text style={styles.actionText}>{i18n.t('article.openArticle')}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -97,6 +166,10 @@ const styles = StyleSheet.create({
     width,
     height,
     backgroundColor: '#000',
+  },
+  gestureContainer: {
+    flex: 1,
+    position: 'relative',
   },
   image: {
     width: '100%',
@@ -116,6 +189,16 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     color: '#999',
+  },
+  heartContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
   },
   overlay: {
     flex: 1,

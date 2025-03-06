@@ -8,17 +8,18 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 // Ignore specific warnings
 LogBox.ignoreLogs([
   'Unsupported top level event type "topInsetsChange" dispatched',
+  'TapGestureHandler must be used as a descendant of GestureHandlerRootView',
   // Keep other warnings you want to ignore
 ]);
 
 export default function App() {
   return (
-    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <PaperProvider>
           <Slot />
         </PaperProvider>
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

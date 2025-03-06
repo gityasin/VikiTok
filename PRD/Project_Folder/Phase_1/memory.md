@@ -24,6 +24,8 @@
   - Main feed screen
   - Settings screen
   - Topics selection screen
+  - Liked articles screen
+  - Article detail screen for viewing full article content
 - Created ArticleCard component for displaying articles
 - Fixed React hooks errors in Android app:
   - Updated React version to 18.3.1 to match expo-router dependencies
@@ -68,9 +70,116 @@
   - Improved cross-platform compatibility by using platform-specific files (.web.tsx and .native.tsx)
   - Fixed ViewManagerResolver error by properly separating native and web implementations
   - Ran prebuild to ensure native modules are properly linked
+- Implemented liked articles screen:
+  - Created a new screen for displaying liked articles
+  - Added navigation to the liked articles screen from the main feed
+  - Implemented UI for displaying liked articles in a list
+  - Added ability to unlike articles from the liked articles screen
+  - Updated i18n files with new translations for the likes screen
+  - Added back button to the likes screen for easy navigation
+  - Implemented ability to view liked articles in TikTokPager when clicked, similar to the main feed
+- Improved article display:
+  - Added default thumbnails for articles without images
+  - Created topic-specific default thumbnails
+  - Updated ArticleService to prioritize articles with original thumbnails
+  - Fixed the header title in the liked articles screen
+  - Updated the "Read More" button text to "Open Article" for clarity
+- Enhanced topic search functionality:
+  - Implemented a more sophisticated approach for fetching articles about a topic
+  - Added related search terms for each topic to get more diverse results
+  - Created separate related terms for English and Turkish languages
+  - Randomly selects from related terms to provide variety in search results
+- Implemented in-app article viewing:
+  - Created a new article detail screen for viewing full article content
+  - Added navigation from ArticleCard to article detail screen
+  - Implemented UI for displaying full article content with image
+  - Added ability to like/unlike articles from the detail screen
+  - Added a button to open the article on Wikipedia if desired
+  - Updated i18n files with new translations for the article screen
+- Implemented random article ordering:
+  - Added shuffleArray method to randomize the order of articles
+  - Ensured articles with thumbnails are still prioritized before shuffling
+  - Implemented Fisher-Yates algorithm for efficient shuffling
+- Implemented zapping mode:
+  - Added zappingMode property to UserPreference interface
+  - Updated preference service to handle zapping mode
+  - Added setZappingMode method to preference store
+  - Updated article service to fetch random articles when zapping mode is enabled
+  - Added zapping toggle button to the home page
+  - Added translations for zapping mode in English and Turkish
+  - Implemented visual feedback for zapping mode state
+- Made English the default language:
+  - Updated preference service to always use English as the default language
+  - Removed device locale detection for initial language setting
+- Enhanced article fetching:
+  - Increased article fetch limit from 20 to 50 articles
+  - Implemented fetching from multiple related search terms in parallel
+  - Improved randomization of articles to avoid alphabetical ordering
+  - Added method to get multiple random terms for more diverse results
+- Fixed invisible back button in liked articles:
+  - Added a semi-transparent background to the back button for better visibility
+  - Improved z-index handling to ensure the button is always clickable
+- Improved random article fetching:
+  - Implemented category-based article fetching using the Wikipedia API's categorymembers endpoint
+  - Added support for fetching truly random articles in zapping mode using the random API endpoint
+  - Created new interfaces (WikiArticle, WikiQueryResponse) to type the API responses
+  - Implemented random timestamp generation for more diverse article selection
+  - Added proper URL parameter handling with URLSearchParams
+  - Improved error handling for API requests with proper HTTP status checking
+  - Enhanced the article conversion process to maintain consistent article structure
+- Fixed article display issues:
+  - Improved article detail screen to handle both numeric IDs and titles
+  - Added proper title extraction from Wikipedia API responses
+  - Enhanced category-based article fetching with proper category name formatting for different languages
+  - Implemented fallback to search-based fetching when category-based fetching returns no results
+  - Added comprehensive logging for debugging article fetching issues
+  - Updated getArticleDetails method to include title in the return type
+- Fixed API parameter issues:
+  - Fixed badinteger error by ensuring numeric API parameters are always integers
+  - Added Math.floor() to division operations to prevent floating-point values in integer parameters
+  - Improved parameter handling in Wikipedia API requests
+- Implemented double tap to like feature:
+  - Added TapGestureHandler for detecting double taps on articles
+  - Implemented heart animation when double tapping to like
+  - Used Animated API for smooth animation effects
+  - Added visual feedback with a heart icon that appears and fades out
+- Fixed layout issues in article and likes screens:
+  - Properly implemented SafeAreaView with correct edge handling
+  - Added proper insets handling for the header
+  - Fixed z-index issues with the back button
+  - Added a semi-transparent background to the back button for better visibility
+  - Improved header positioning to avoid overlapping with the status bar
+- Enhanced random article fetching within categories:
+  - Implemented multiple approaches to get truly random articles (timestamps, directions)
+  - Added parallel fetching with multiple random timestamps
+  - Implemented duplicate removal to ensure unique articles
+  - Added proper error handling for all fetch operations
+  - Improved logging for better debugging
+- Fixed cross-platform issues:
+  - Fixed TapGestureHandler error on Android by ensuring GestureHandlerRootView is the top-level component
+  - Simplified gesture handling for better cross-platform compatibility
+  - Added fallback mechanisms for platforms where gesture handlers might not work properly
+  - Ignored specific gesture-related warnings that can't be fixed
+- Improved ID and navigation handling:
+  - Fixed issue with article IDs in zap mode by using article title as ID instead of numeric ID
+  - Improved URL construction for different platforms and languages
+  - Added proper encoding/decoding of URI components in navigation parameters
+  - Enhanced article detail screen to better handle both numeric IDs and title-based IDs
+  - Updated ArticleCard to use consistent navigation parameters across different article sources
+- Optimized performance for mobile devices:
+  - Fixed infinite loading loop by limiting parallel API requests
+  - Reduced the number of articles processed in each API call
+  - Added timeouts to all API calls to prevent hanging
+  - Implemented request cancellation using AbortController
+  - Added fallback mechanisms to return partial results when timeouts occur
+  - Reduced the maximum number of articles fetched at once
+  - Improved error handling to prevent app crashes
+  - Added more detailed logging for debugging performance issues
 
 ## Next Steps
 - Implement testing for services
 - Improve UI/UX with better styling and animations
 - Implement more robust error handling
 - Optimize performance with caching and image optimization
+- Add more comprehensive topics list
+- Implement an algorithm to show similar articles to ones that users liked

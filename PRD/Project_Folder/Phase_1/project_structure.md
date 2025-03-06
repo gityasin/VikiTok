@@ -12,40 +12,52 @@
 
 ## App (Expo Router)
 - `app/_layout.tsx`: Root layout component for Expo Router
-- `app/index.tsx`: Main feed screen with TikTok-style vertical scrolling
+- `app/index.tsx`: Main feed screen with TikTok-style vertical scrolling and zapping mode toggle
 - `app/settings.tsx`: Settings screen for language selection
 - `app/topics.tsx`: Topics selection screen
+- `app/likes.tsx`: Screen for displaying liked articles with ability to view in TikTok-style pager
+- `app/article.tsx`: Screen for displaying full article content with ability to like/unlike and open in Wikipedia
 
 ## Source Code
 - `src/components/`: React components
-  - `ArticleCard.tsx`: Component for displaying a single article in full-screen TikTok style
+  - `ArticleCard.tsx`: Component for displaying a single article in full-screen TikTok style with proper read more and open article buttons
   - `TikTokPager.tsx`: Common interface for the TikTok-style pager component
   - `TikTokPager.web.tsx`: Web-specific implementation using ScrollView
   - `TikTokPager.native.tsx`: Native-specific implementation using PagerView
 
 - `src/constants/`: Application constants
-  - `index.ts`: API endpoints, default topics, supported languages, storage keys, etc.
+  - `index.ts`: API endpoints, default topics, supported languages, storage keys, default thumbnails for topics, increased article fetch limit (50), etc.
 
 - `src/hooks/`: Custom React hooks (to be implemented)
 
 - `src/i18n/`: Internationalization
   - `index.ts`: i18n configuration
-  - `en.ts`: English translations
-  - `tr.ts`: Turkish translations
+  - `en.ts`: English translations including zapping mode translations
+  - `tr.ts`: Turkish translations including zapping mode translations
 
 - `src/services/`: API and data services
-  - `articleService.ts`: Service for fetching articles from Wikipedia API
+  - `articleService.ts`: Service for fetching articles from Wikipedia API with enhanced functionality:
+    - Support for default thumbnails and prioritizing articles with images
+    - Related search terms for topics with language-specific variations
+    - Zapping mode with true random article fetching using the random API endpoint
+    - Category-based article fetching using the categorymembers endpoint
+    - Random timestamp generation for diverse article selection
+    - Proper URL parameter handling with URLSearchParams
+    - Enhanced error handling for API requests
+    - Improved article conversion process
+    - Fisher-Yates shuffling algorithm for randomizing article order
   - `likeService.ts`: Service for managing article likes in Supabase
-  - `preferenceService.ts`: Service for managing user preferences
+  - `preferenceService.ts`: Service for managing user preferences including zapping mode and enforcing English as the default language
   - `supabaseClient.ts`: Supabase client configuration
 
 - `src/stores/`: Zustand state stores
-  - `articleStore.ts`: Store for managing articles
+  - `articleStore.ts`: Store for managing articles with support for randomized ordering
   - `likeStore.ts`: Store for managing likes
-  - `preferenceStore.ts`: Store for managing preferences
+  - `preferenceStore.ts`: Store for managing preferences including zapping mode
 
 - `src/types/`: TypeScript type definitions
-  - `index.ts`: Types for Article, UserPreference, UserLike, etc.
+  - `index.ts`: Types for Article, UserPreference (with zappingMode property), UserLike, etc.
+  - Additional interfaces for Wikipedia API responses (WikiArticle, WikiQueryResponse) used in article fetching
 
 - `src/utils/`: Utility functions
   - `userId.ts`: Utility for generating and retrieving user ID

@@ -1,5 +1,23 @@
 # VikiTok Todo List
 
+## Features to Add
+- [x] Currently topics only shows article that has the topic name. implement a better topic logic. It should show random articles about that topic.
+- [x] Read more button should open the full article in the app. It shouldn't open the article link on wikipedia.
+- [x] Some articles don't have thumbnails. We should show a default thumbnail for each category if the article doesn't have a picture.
+- [x] We should proiritize articles with thumbnail.
+- [x] We have two read more buttons. One below the summary should show more text in the app. The other should be renamed to open article
+- [ ] More comphrehensive topics list.
+- [x] Ordering of the articles should be random in the homepage. Currently it's ordered alphabetically.
+- [x] Every time app is opened it should randomly list articles. Not the same article every time.
+- [x] A toggle in the home page for zapping. When It's turned on it ignores selected topics and fetches random articles from wikipedia.
+- [x] Make default language english.
+- [x] Fetch 50 articles at a time and randomly order them. Both when in zap on and not in zap mode. Because I still see alphabetically ordered articles. After like 10 of them it switches to a new word and it's alphabetically ordered again. I want it to be randomly ordered. So fetch 50 RANDOM articles from that category and show them. Or when in zap mode fetch 50 random articles and show them.
+- [x] When I select history I still get articles that starts with the word history. I want the app to fetch random 50 articles from a category. It shouldn't fetch articles alphabetically.
+- [x] In zap mode use this api so it's totally random: "https://en.wikipedia.org/w/api.php?action=query&format=json&list=random&rnlimit=10&rnnamespace=0"
+- [x] Double tap to like article.
+- [x] Get truely random articles within categories properly by fetching and printing the titles and page IDs of random articles from the "Category:Algorithms" category.
+
+
 ## Bugs (keep track of bugs fixed)
 - [x] Errors when trying to run android app
 - [x] Invalid Supabase URL error
@@ -18,6 +36,18 @@
 - [x] Fixed babel.config.js warning by removing deprecated 'expo-router/babel' plugin
 - [x] Fixed "Importing native-only module" error on web by using platform-specific files (.web.tsx and .native.tsx)
 - [x] Fixed ViewManagerResolver error on Android by running prebuild and properly linking native modules
+- [x] Fixed missing back button in likes screen and added ability to view liked articles in TikTokPager
+- [x] Liked articles screen doesn't show images.
+- [x] Liked articles has the article name as header. it should have liked articles as the header. 
+- [x] When in a liked article the back button is invisible.
+- [x] Read more shows numbers in the titles and nothing else (fixed by improving article detail screen to handle both numeric IDs and titles)
+- [x] Only zap mode shows articles when selecting categories (fixed by improving category-based article fetching with proper category name formatting and fallback to search-based fetching)
+- [x] In a liked article the top of the screen is higher than normal. Same issue when in read more page.
+- [x] badinteger error when fetching articles from categories (fixed by ensuring cmlimit parameter is always an integer)
+- [x] "info": "Invalid value \"16.666666666666668\" for integer parameter \"cmlimit\"."
+- [x] TapGestureHandler error on Android (fixed by ensuring GestureHandlerRootView is the top-level component and simplifying gesture handling)
+- [x] In zap mode, read more only shows article ID number (fixed by using article title as ID instead of numeric ID and properly handling navigation parameters)
+- [x] Infinite loading loop on mobile (fixed by limiting parallel requests, reducing the number of articles processed, and adding timeouts to all API calls)
 
 ## Setup
 
@@ -58,6 +88,9 @@
 - [x] Create `likeStore` (Zustand).
 - [x] Add like button to `ArticleCard`.
 - [x] Update UI to reflect like status.
+- [x] Implement a screen to view liked articles.
+- [x] Add back button to liked articles screen.
+- [x] Implement ability to view liked articles in TikTokPager when clicked.
 
 ## Sharing
 
@@ -79,6 +112,8 @@
 ## Refinement
 
 - [ ] Improve UI/UX (styling, animations).
+- [ ] Show the summary of the articles instead of the start of article.
+- [ ] Implement an algorithm to show similar articles to ones that users liked.
 - [ ] Implement more robust error handling.
 - [ ] Optimize performance (caching, image optimization).
 - [ ] Add Row Level Security to Supabase.

@@ -47,17 +47,13 @@ class PreferenceService {
    * @returns The default preferences
    */
   private createDefaultPreferences(): UserPreference {
-    // Get the device locale
-    const locale = Localization.locale.split('-')[0];
-    
-    // Check if the locale is supported, otherwise use the default language
-    const language = SUPPORTED_LANGUAGES.includes(locale as Language) 
-      ? (locale as Language) 
-      : DEFAULT_LANGUAGE;
+    // Always use English as the default language regardless of device locale
+    const language: Language = DEFAULT_LANGUAGE;
     
     return {
       language,
       topics: DEFAULT_TOPICS,
+      zappingMode: false,
     };
   }
 }

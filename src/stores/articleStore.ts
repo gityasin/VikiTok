@@ -6,7 +6,7 @@ interface ArticleState {
   articles: Article[];
   isLoading: boolean;
   error: string | null;
-  fetchArticles: (language: Language, topics: Topic[], offset?: number) => Promise<void>;
+  fetchArticles: (language: Language, topics: Topic[], offset?: number, zappingMode?: boolean) => Promise<void>;
   appendArticles: (newArticles: Article[]) => void;
   clearArticles: () => void;
 }
@@ -16,7 +16,7 @@ const useArticleStore = create<ArticleState>((set, get) => ({
   isLoading: false,
   error: null,
   
-  fetchArticles: async (language: Language, topics: Topic[], offset = 0) => {
+  fetchArticles: async (language: Language, topics: Topic[], offset = 0, zappingMode = false) => {
     try {
       set({ isLoading: true, error: null });
       
@@ -25,7 +25,7 @@ const useArticleStore = create<ArticleState>((set, get) => ({
         set({ articles: [] });
       }
       
-      const newArticles = await articleService.fetchArticles(language, topics, offset);
+      const newArticles = await articleService.fetchArticles(language, topics, offset, zappingMode);
       
       // Append the new articles to the existing ones
       set((state) => ({
